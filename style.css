@@ -1,0 +1,39 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.footer {
+    background-color: #e9ecef;
+    padding: 1rem 0;
+}
+
+.container {
+    padding-top: 2rem;
+}
+
+h1, h2 {
+    color: #343a40;
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+}
+
+.btn-primary, .btn-success {
+    margin-top: 1rem;
+}
+
+.footer span {
+    color: #6c757d;
+}
