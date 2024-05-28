@@ -37,3 +37,14 @@ h1, h2 {
 .footer span {
     color: #6c757d;
 }
+
+.list-group-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.list-group-item h5 {
+    color: #007bff;
+}
