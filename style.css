@@ -65,3 +65,4 @@ body {
 .nav-link px-2 link-secondary {
     color: #f80909;
 }
+.hidden { display: none; }
