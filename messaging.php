@@ -33,8 +33,10 @@ require "verif_session.php";
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">Login</button>
-            <button type="button" class="btn btn-primary">Sign Up</button>
+            <a href="deconnexion.php">
+                <button type="button" class="btn btn-outline-primary me-2">Deconnexion</button>
+            </a>
+
         </div>
     </header>
 
