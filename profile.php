@@ -28,26 +28,33 @@
     <title>Profil - ECE In</title>
 
 </head>
+<?php
+
+require "verif_session.php";
+
+?>
 <body>
 <div class="container">
     <!-- Bandeau du dessus -->
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <a href="index.php" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
             <img src="images/logo.png" alt="ECE In Logo" class="img-fluid">
         </a>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">Accueil</a></li>
-            <li><a href="network.html" class="nav-link px-2 link-dark">Mon Réseau</a></li>
+            <li><a href="index.php" class="nav-link px-2 link-secondary">Accueil</a></li>
+            <li><a href="network.php" class="nav-link px-2 link-dark">Mon Réseau</a></li>
             <li><a href="profile.php" class="nav-link px-2 link-dark">Vous</a></li>
-            <li><a href="notifications.html" class="nav-link px-2 link-dark">Notifications</a></li>
-            <li><a href="messaging.html" class="nav-link px-2 link-dark">Messagerie</a></li>
-            <li><a href="jobs.html" class="nav-link px-2 link-dark">Emplois</a></li>
+            <li><a href="notifications.php" class="nav-link px-2 link-dark">Notifications</a></li>
+            <li><a href="messaging.php" class="nav-link px-2 link-dark">Messagerie</a></li>
+            <li><a href="jobs.php" class="nav-link px-2 link-dark">Emplois</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">Login</button>
-            <button type="button" class="btn btn-primary">Sign Up</button>
+            <a href="deconnexion.php">
+                <button type="button" class="btn btn-outline-primary me-2">Deconnexion</button>
+            </a>
+
         </div>
     </header>
     <!-- Body -->
@@ -57,13 +64,16 @@
         <!-- Affichage info de l'utilisateur -->
         <div id="infoAffichage">
             <?php
+
             $database = "webdyna2024";
+
+            $Le_mec_qui_est_co = $_SESSION['identifiant_utilisateur'];
 
             $db_handle = mysqli_connect('localhost', 'root', '');
             $db_found = mysqli_select_db($db_handle, $database);
 
             if($db_found) {
-                $sql = "SELECT * FROM Utilisateur WHERE identifiant_utilisateur = 1";
+                $sql = "SELECT * FROM utilisateur WHERE identifiant_utilisateur = $Le_mec_qui_est_co";
 
                 $result = mysqli_query($db_handle, $sql);
 
@@ -117,6 +127,11 @@
                 <button class="btn btn-primary" onclick="Editer()">Modifier mes informations</button>
             </div>
 
+            <!-- Footer -->
+            <footer class="pt-3 mt-4 text-muted border-top">
+                © 2024 ECE In
+            </footer>
+
         </div>
 
 
@@ -128,11 +143,13 @@
             <?php
             $database = "webdyna2024";
 
+            $Le_mec_qui_est_co = $_SESSION['identifiant_utilisateur'];
+
             $db_handle = mysqli_connect('localhost', 'root', '');
             $db_found = mysqli_select_db($db_handle, $database);
 
             if($db_found) {
-                $sql = "SELECT * FROM Utilisateur WHERE identifiant_utilisateur = 1";
+                $sql = "SELECT * FROM Utilisateur WHERE identifiant_utilisateur = $Le_mec_qui_est_co";
 
                 $result = mysqli_query($db_handle, $sql);
 
@@ -191,7 +208,7 @@
 
             if (isSet($_POST['envoie_des_données'])) {
 
-                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=1";
+                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
                 mysqli_query($db_handle, $requete);
 
                 echo"<script>
@@ -207,21 +224,22 @@
             mysqli_close($db_handle);
             ?>
 
-
-
-
+            <!-- Footer -->
+            <footer class="pt-3 mt-4 text-muted border-top">
+                © 2024 ECE In
+            </footer>
 
         </div>
 
+
     </div>
 
-    <!-- Footer -->
-    <footer class="pt-3 mt-4 text-muted border-top">
-        © 2024 ECE In
-    </footer>
+
+
 </div>
 </body>
 </html>
+
 
 
 
