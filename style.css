@@ -66,10 +66,23 @@ body {
     border-color: #02717A;
 }
 
-.nav-link px-2 link-secondary {
-    color: #f80909;
+.hidden { display: none; }
+
+.col-md-4 h2{
+    font-size: 24px;
+    color: #02717A;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.hidden {
-    display: none;
+.col-md-8 h1
+{
+    font-size: 24px;
+    color: #02717A;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Montserrat', sans-serif;
 }

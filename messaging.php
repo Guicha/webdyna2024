@@ -8,13 +8,10 @@
     <link rel="stylesheet" href="style.css">
     <title>Messagerie - ECE In</title>
 </head>
-
 <body>
 
 <?php
-
 require "verif_session.php";
-
 ?>
 
 <div class="container">
@@ -23,42 +20,42 @@ require "verif_session.php";
         <a href="index.php" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
             <img src="images/logo.png" alt="ECE In Logo" class="img-fluid">
         </a>
-
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="index.php" class="nav-link px-2 link-secondary">Accueil</a></li>
             <li><a href="network.php" class="nav-link px-2 link-dark">Mon Réseau</a></li>
             <li><a href="profile.php" class="nav-link px-2 link-dark">Vous</a></li>
             <li><a href="notifications.php" class="nav-link px-2 link-dark">Notifications</a></li>
-            <li><a href="messaging.html" class="nav-link px-2 link-dark">Messagerie</a></li>
+            <li><a href="messaging.php" class="nav-link px-2 link-dark">Messagerie</a></li>
             <li><a href="jobs.php" class="nav-link px-2 link-dark">Emplois</a></li>
         </ul>
-
         <div class="col-md-3 text-end">
             <a href="deconnexion.php">
-                <button type="button" class="btn btn-outline-primary me-2">Deconnexion</button>
+                <button type="button" class="btn btn-outline-primary me-2">Déconnexion</button>
             </a>
-
         </div>
     </header>
 
     <!-- Main Content -->
-    <div class="section">
-        <h1>Messagerie</h1>
-        <div class="card">
-            <div class="card-header">
-                Conversation avec Nom de la Personne
-            </div>
-            <div class="card-body">
-                <div class="chat-box">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Utilisateurs</h2>
+            <ul class="list-group" id="user-list">
+                <!-- Liste des utilisateurs sera chargée ici -->
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h1>Messagerie</h1>
+            <div class="card">
+                <div class="card-header" id="chat-header">
+                    Conversation avec <span id="chat-with">...</span>
+                </div>
+                <div class="card-body" id="chat-box">
                     <!-- Afficher les messages ici -->
-                    <p><strong>Nom de la Personne:</strong> Message reçu</p>
-                    <p><strong>Vous:</strong> Message envoyé</p>
-                    <!-- Répétez pour d'autres messages -->
                 </div>
                 <div class="input-group mt-3">
-                    <input type="text" class="form-control" placeholder="Écrire un message...">
+                    <input type="text" class="form-control" id="message-input" placeholder="Écrire un message...">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">Envoyer</button>
+                        <button class="btn btn-primary" id="send-message" type="button">Envoyer</button>
                     </div>
                 </div>
             </div>
@@ -71,9 +68,72 @@ require "verif_session.php";
     </footer>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        loadUsers();
+
+        $('#send-message').click(function () {
+            sendMessage();
+        });
+
+        function loadUsers() {
+            $.ajax({
+                url: 'get_users.php',
+                method: 'GET',
+                success: function (response) {
+                    $('#user-list').html(response);
+                    $('.user-item').click(function () {
+                        var userId = $(this).data('id');
+                        var userName = $(this).text();
+                        $('#chat-with').text(userName);
+                        $('.user-item').removeClass('active');
+                        $(this).addClass('active');
+                        loadMessages(userId);
+                        startAutoRefresh(userId);
+                    });
+                }
+            });
+        }
+
+        function loadMessages(userId) {
+            $.ajax({
+                url: 'get_messages.php',
+                method: 'GET',
+                data: { user_id: userId },
+                success: function (response) {
+                    $('#chat-box').html(response);
+                }
+            });
+        }
+
+        function sendMessage() {
+            var message = $('#message-input').val();
+            var userId = $('.user-item.active').data('id');
+            if (message && userId) {
+                $.ajax({
+                    url: 'send_message.php',
+                    method: 'POST',
+                    data: { message: message, user_id: userId },
+                    success: function () {
+                        $('#message-input').val('');
+                        loadMessages(userId);
+                    }
+                });
+            }
+        }
+
+        function startAutoRefresh(userId) {
+            if (window.messageInterval) {
+                clearInterval(window.messageInterval);
+            }
+            window.messageInterval = setInterval(function() {
+                loadMessages(userId);
+            }, 1000); // Refresh every 3 seconds
+        }
+    });
+</script>
 </body>
 </html>
-
