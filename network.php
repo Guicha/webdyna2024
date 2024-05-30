@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <title>Mon Réseau - ECE In</title>
 </head>
+<?php
+
+require "verif_session.php";
+
+?>
 <body>
+
 <div class="container">
     <!-- Header -->
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">

@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="style.css">
     <title>Notifications - ECE In</title>
 </head>
+<?php
+
+require "verif_session.php";
+
+?>
 <body>
 <div class="container">
     <!-- Header -->

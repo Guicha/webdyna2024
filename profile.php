@@ -28,6 +28,11 @@
     <title>Profil - ECE In</title>
 
 </head>
+<?php
+
+require "verif_session.php";
+
+?>
 <body>
 <div class="container">
     <!-- Bandeau du dessus -->
@@ -120,6 +125,11 @@
                 <button class="btn btn-primary" onclick="Editer()">Modifier mes informations</button>
             </div>
 
+            <!-- Footer -->
+            <footer class="pt-3 mt-4 text-muted border-top">
+                © 2024 ECE In
+            </footer>
+
         </div>
 
 
@@ -131,11 +141,13 @@
             <?php
             $database = "webdyna2024";
 
+            $Le_mec_qui_est_co = $_SESSION['identifiant_utilisateur'];
+
             $db_handle = mysqli_connect('localhost', 'root', '');
             $db_found = mysqli_select_db($db_handle, $database);
 
             if($db_found) {
-                $sql = "SELECT * FROM Utilisateur WHERE identifiant_utilisateur = 1";
+                $sql = "SELECT * FROM Utilisateur WHERE identifiant_utilisateur = $Le_mec_qui_est_co";
 
                 $result = mysqli_query($db_handle, $sql);
 
@@ -194,7 +206,7 @@
 
             if (isSet($_POST['envoie_des_données'])) {
 
-                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=1";
+                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
                 mysqli_query($db_handle, $requete);
 
                 echo"<script>
@@ -210,18 +222,18 @@
             mysqli_close($db_handle);
             ?>
 
-
-
-
+            <!-- Footer -->
+            <footer class="pt-3 mt-4 text-muted border-top">
+                © 2024 ECE In
+            </footer>
 
         </div>
 
+
     </div>
 
-    <!-- Footer -->
-    <footer class="pt-3 mt-4 text-muted border-top">
-        © 2024 ECE In
-    </footer>
+
+
 </div>
 </body>
 </html>

@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <title>Messagerie - ECE In</title>
 </head>
+
 <body>
+
+<?php
+
+require "verif_session.php";
+
+?>
+
 <div class="container">
     <!-- Header -->
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
