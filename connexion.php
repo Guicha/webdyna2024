@@ -41,6 +41,8 @@
 
 session_start();
 
+require "verif_session.php";
+
 include "liaison_bdd.php";
 
 if (isset($_POST['connexion'])) {
@@ -80,6 +82,8 @@ if (isset($_POST['connexion'])) {
             $_SESSION['cv'] = $row['cv'];
 
             echo "<h2 class=\"fw-bold mb-5\">Connexion réussie ! Bonjour " . $_SESSION['prenom'] ." !</h2>";
+
+            header('Location: index.php');
 
 
         } else {

@@ -40,6 +40,8 @@
 
 session_start();
 
+require "verif_session.php";
+
 include "liaison_bdd.php";
 
 if (isset($_POST['inscription'])) {
@@ -83,7 +85,7 @@ if (isset($_POST['inscription'])) {
 
                 echo "<h2 class=\"fw-bold mb-5\">Inscription complétée !</h2>";
 
-                echo "<a href='login.php'><button class='btn'>Se connecter</button></a>";
+                echo "<a href='login.html'><button class='btn'>Se connecter</button></a>";
 
             } else {
 
