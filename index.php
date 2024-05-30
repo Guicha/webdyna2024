@@ -17,6 +17,8 @@ require "verif_session.php";
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous">
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
 
 </head>
 
