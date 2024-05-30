@@ -88,6 +88,7 @@ require "verif_session.php";
                         echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
                     echo '</div>';
+                    echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
                     echo '<div class="form-group">';
                     echo '<label for="nom"><b>Nom</b></label>';
@@ -112,8 +113,49 @@ require "verif_session.php";
 
                     echo '<div class="form-group">';
                     echo '<label for="bio"><b>Biographie</b></label>';
-                    echo  "<br>".$data['bio'] . "<br>";
+                    echo  "<br>".$data['bio'] . "<br><br>";
                     echo '</div>';
+
+                    echo '<h1 class="h3 border-top"><b>Formations</b></h1>';
+
+                    $sql2 = "SELECT * FROM formation WHERE identifiant_utilisateur = $Le_mec_qui_est_co";
+
+                    $result2 = mysqli_query($db_handle, $sql2);
+
+                    echo'<br>';
+                    echo'<div class="container border-bottom">';
+                    echo'<div class="row">';
+
+                    while ($data = mysqli_fetch_assoc($result2)) {
+                        echo'<div class="col-md-4">';
+                            echo '<div class="card">';
+                                echo'<div class="card-body">';
+                                    echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
+                                    echo'<h6 class="card-subtitle mb-2 text-muted">Du '.$data['date_debut'].' au '.$data['date_fin'].'</h6>';
+                                    echo'<p class="card-text">'.$data['description'].'</p>';
+                                echo'</div>';
+
+                                $formation = $data['identifiant_formation'];
+
+                                $sql3 = "SELECT * FROM projet WHERE identifiant_formation = $formation ";
+                                $result3 = mysqli_query($db_handle, $sql3);
+
+                                while($data3 = mysqli_fetch_assoc($result3)) {
+                                    echo '<div class="card">';
+                                        echo'<div class="card-body">';
+                                            echo'<h5 class="card-title">'.$data3['nom'].'</h5>';
+                                            echo'<h6 class="card-subtitle mb-2 text-muted">En '.$data3['date'].'</h6>';
+                                            echo'<p class="card-text">'.$data3['description'].'</p>';
+                                        echo'</div>';
+                                    echo'</div>';
+                                }
+                            echo'</div>';
+                        echo'</div>';
+
+
+                    }
+                    echo'</div>';
+                    echo'</div>';
 
                 }
             }else {
@@ -121,11 +163,12 @@ require "verif_session.php";
             }
             mysqli_close($db_handle);
             ?>
-
+            <br>
 
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary" onclick="Editer()">Modifier mes informations</button>
             </div>
+
 
             <!-- Footer -->
             <footer class="pt-3 mt-4 text-muted border-top">
@@ -133,6 +176,7 @@ require "verif_session.php";
             </footer>
 
         </div>
+
 
 
 
@@ -165,10 +209,13 @@ require "verif_session.php";
 
                     echo '</div>';
 
+
                     echo '<form method="post" enctype="multipart/form-data">';
                     echo '<div class="d-flex justify-content-center mt-3">';
                     echo '<input type="file" name="Nouvelleimage">';
                     echo '</div>'.'<br>';
+
+                    echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
 
                     echo '<div class="form-group">';
@@ -196,6 +243,8 @@ require "verif_session.php";
                     $bio = $data['bio'];
 
                     echo "<textarea class='form-control' name='bio' placeholder=".$bio.">".$bio."</textarea>";
+
+                    echo '<br><h1 class="h3 border-top"><b>Formations</b></h1>';
 
 
                     echo '<br><div class="d-flex justify-content-center">';
