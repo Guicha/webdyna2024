@@ -81,11 +81,11 @@ require "verif_session.php";
 
                     echo '<div class="d-flex justify-content-center">';
 
-                    if(empty($utilisateur['photo'])) {
+                    if(empty($data['photo'])) {
                         echo '<img src="images\defaut.jpg" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }else{
                         $image = $data['photo'];
-                        echo '<img src="$image" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
+                        echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
                     echo '</div>';
 
@@ -156,18 +156,16 @@ require "verif_session.php";
                 while ($data = mysqli_fetch_assoc($result)) {
                     echo '<div class="d-flex justify-content-center">';
 
-                    if(empty($utilisateur['photo'])) {
+                    if(empty($data['photo'])) {
                         echo '<img src="images\defaut.jpg" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
-                        $image = "images\defaut.jpg";
-
                     }else{
                         $image = $data['photo'];
-                        echo '<img src="$image" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
+                        echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
 
                     echo '</div>';
 
-                    echo '<form method="post" >';
+                    echo '<form method="post" enctype="multipart/form-data">';
                     echo '<div class="d-flex justify-content-center mt-3">';
                     echo '<input type="file" name="Nouvelleimage">';
                     echo '</div>'.'<br>';
@@ -196,7 +194,9 @@ require "verif_session.php";
                     echo '<div class="form-group">';
                     echo'<label for="bio"><b>Biographie</b></label>';
                     $bio = $data['bio'];
-                    echo '<textarea class="form-control" name="bio" placeholder='.$bio.'>'.$bio.'</textarea>';
+
+                    echo "<textarea class='form-control' name='bio' placeholder=".$bio.">".$bio."</textarea>";
+
 
                     echo '<br><div class="d-flex justify-content-center">';
                     echo '<button type="submit" name="envoie_des_données" class="btn btn-success" onclick="Sauvegarder()">Enregistrer mes modifications</button>';
@@ -208,7 +208,45 @@ require "verif_session.php";
 
             if (isSet($_POST['envoie_des_données'])) {
 
-                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
+                $_POST['nom'] = str_replace("'","''",$_POST['nom']);
+                $_POST['prenom'] = str_replace("'","''",$_POST['prenom']);
+                $_POST['email'] = str_replace("'","''",$_POST['email']);
+                $_POST['mdp'] = str_replace("'","''",$_POST['mdp']);
+                $_POST['bio'] = str_replace("'","''",$_POST['bio']);
+
+                $nomFichier = $_FILES['Nouvelleimage']['name'];
+                $typeFichier = $_FILES['Nouvelleimage']['type'];
+                $tailleFichier = $_FILES['Nouvelleimage']['size'];
+                $tmpFichier = $_FILES['Nouvelleimage']['tmp_name'];
+
+                // Vérifiez si le fichier est une image
+                $extensionsAutorisees = array('jpg', 'jpeg', 'gif', 'png');
+                $extensionFichier = pathinfo($nomFichier, PATHINFO_EXTENSION);
+                if (!in_array(strtolower($extensionFichier), $extensionsAutorisees)) {
+                    die();
+                }
+
+                // Vérifiez la taille du fichier - 5MB maximum
+                $tailleMax = 5 * 1024 * 1024; // 5MB
+                if ($tailleFichier > $tailleMax) {
+                    die();
+                }
+
+                $dossier = 'images/';
+                $chemin = $dossier . basename($nomFichier);
+
+                if (move_uploaded_file($tmpFichier, $chemin)) {
+                    echo " ";
+                } else {
+                    echo "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
+                }
+
+
+
+
+
+
+                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."',photo='".$chemin."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
                 mysqli_query($db_handle, $requete);
 
                 echo"<script>
