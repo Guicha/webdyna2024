@@ -12,7 +12,7 @@ require "verif_session.php";
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Accueil - ECE In</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 
@@ -53,6 +53,7 @@ require "verif_session.php";
 
         ?>
 
+
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -61,13 +62,28 @@ require "verif_session.php";
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="https://via.placeholder.com/800x400" alt="First slide">
+                    <img class="d-block w-100" src="images/vivatech.jpeg" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Événement de la semaine</h5>
-                        <p>Description de l'événement.</p>
+                        <h5>Vivatech 2024</h5>
+                        <p>La semaine dernière à eu lieu VivaTech 2024.</p>
                     </div>
                 </div>
-                <!-- Ajoutez d'autres éléments de carousel ici -->
+
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="images/shrek.jpg" alt="Second slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Shrek 2024</h5>
+                        <p>La semaine dernière à eu lieu Shrek 2024.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="images/logo.png" alt="Third slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>La meilleure école !</h5>
+                        <p>Branchez vous ECE</p>
+                    </div>
+                </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -91,6 +107,7 @@ require "verif_session.php";
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
 
