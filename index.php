@@ -13,6 +13,8 @@ require "verif_session.php";
     <link rel="stylesheet" href="style.css">
     <title>Accueil - ECE In</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
 
 </head>
 
