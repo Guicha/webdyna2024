@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
@@ -14,6 +13,11 @@ body {
     margin: 0;
     display: inline-block;
     vertical-align: middle;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.section h1, .section h2, .section p {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .section {
@@ -62,7 +66,23 @@ body {
     border-color: #02717A;
 }
 
-.nav-link px-2 link-secondary {
-    color: #f80909;
-}
 .hidden { display: none; }
+
+.col-md-4 h2{
+    font-size: 24px;
+    color: #02717A;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.col-md-8 h1
+{
+    font-size: 24px;
+    color: #02717A;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Montserrat', sans-serif;
+}
