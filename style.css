@@ -41,6 +41,13 @@ body {
     color: #02717A;
 }
 
+.nav-messages
+{
+    float: left;
+    width: 200px;
+    height: 800px;
+}
+
 .carousel-item img {
     height: 400px;
     object-fit: cover;

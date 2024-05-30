@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +13,7 @@
 <body>
 
 <?php
-
 require "verif_session.php";
-
 ?>
 
 <div class="container">
@@ -37,28 +36,51 @@ require "verif_session.php";
             <a href="deconnexion.php">
                 <button type="button" class="btn btn-outline-primary me-2">Deconnexion</button>
             </a>
-
         </div>
     </header>
 
     <!-- Main Content -->
-    <div class="section">
-        <h1>Messagerie</h1>
-        <div class="card">
-            <div class="card-header">
-                Conversation avec Nom de la Personne
+    <div class="row">
+        <!-- Navigation Column -->
+        <div class="col-md-3">
+            <div class="nav-messages">
+                <!-- Liste des derniers messages à mettre ici -->
+                <?php
+                echo "<p>Bienvenue " . $_SESSION['prenom'] . " !</p>";
+                ?>
+                <ul class="list-group">
+                    <!-- Exemple de message -->
+                    <li class="list-group-item">Dernier message 1</li>
+                    <li class="list-group-item">Dernier message 2</li>
+                    <!-- Ajoutez d'autres messages ici -->
+                </ul>
             </div>
-            <div class="card-body">
-                <div class="chat-box">
-                    <!-- Afficher les messages ici -->
-                    <p><strong>Nom de la Personne:</strong> Message reçu</p>
-                    <p><strong>Vous:</strong> Message envoyé</p>
-                    <!-- Répétez pour d'autres messages -->
-                </div>
-                <div class="input-group mt-3">
-                    <input type="text" class="form-control" placeholder="Écrire un message...">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">Envoyer</button>
+        </div>
+
+        <!-- Messaging Column -->
+        <div class="col-md-9">
+            <div class="section">
+                <h1>Messagerie</h1>
+                <div class="card">
+                    <div class="card-header">
+                        Conversation avec Nom de la Personne
+                    </div>
+                    <div class="card-body">
+                        <div id="chat-box" class="chat-box">
+                            <!-- Afficher les messages ici -->
+                            <?php
+                            if (file_exists("log.html")) {
+                                $contents = file_get_contents("log.html");
+                                echo $contents;
+                            }
+                            ?>
+                        </div>
+                        <div class="input-group mt-3">
+                            <input id="message" type="text" class="form-control" placeholder="Écrire un message...">
+                            <div class="input-group-append">
+                                <button id="send-btn" class="btn btn-primary" type="button">Envoyer</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,9 +93,46 @@ require "verif_session.php";
     </footer>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Fonction pour envoyer un message
+        function sendMessage() {
+            var text = $("#message").val();
+            if(text != ""){
+                $.post("post_message.php", {text: text}, function(data){
+                    $("#chat-box").append(data);
+                    $("#message").val("");
+                });
+            }
+        }
+
+        // Envoi du message au clic sur le bouton
+        $("#send-btn").click(function(){
+            sendMessage();
+        });
+
+        // Envoi du message à la pression de la touche Entrée
+        $("#message").keypress(function(event) {
+            if(event.which == 13) {  // 13 est le code ASCII pour la touche Entrée
+                sendMessage();
+            }
+        });
+
+        // Fonction pour rafraîchir la boîte de chat
+        function loadChat(){
+            $.ajax({
+                url: "log.html",
+                cache: false,
+                success: function(html){
+                    $("#chat-box").html(html);
+                }
+            });
+        }
+
+        // Rafraîchir la boîte de chat toutes les secondes
+        setInterval(loadChat, 1000);
+    });
+</script>
 </body>
 </html>
-
