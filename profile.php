@@ -88,13 +88,14 @@ require "verif_session.php";
 
                     echo '<div class="d-flex justify-content-center">';
 
-                    if(empty($utilisateur['photo'])) {
+                    if(empty($data['photo'])) {
                         echo '<img src="images\defaut.jpg" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }else{
                         $image = $data['photo'];
-                        echo '<img src="$image" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
+                        echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
                     echo '</div>';
+                    echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
                     echo '<div class="form-group">';
                     echo '<label for="nom"><b>Nom</b></label>';
@@ -119,8 +120,49 @@ require "verif_session.php";
 
                     echo '<div class="form-group">';
                     echo '<label for="bio"><b>Biographie</b></label>';
-                    echo  "<br>".$data['bio'] . "<br>";
+                    echo  "<br>".$data['bio'] . "<br><br>";
                     echo '</div>';
+
+                    echo '<h1 class="h3 border-top"><b>Formations</b></h1>';
+
+                    $sql2 = "SELECT * FROM formation WHERE identifiant_utilisateur = $Le_mec_qui_est_co";
+
+                    $result2 = mysqli_query($db_handle, $sql2);
+
+                    echo'<br>';
+                    echo'<div class="container border-bottom">';
+                    echo'<div class="row">';
+
+                    while ($data = mysqli_fetch_assoc($result2)) {
+                        echo'<div class="col-md-4">';
+                            echo '<div class="card">';
+                                echo'<div class="card-body">';
+                                    echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
+                                    echo'<h6 class="card-subtitle mb-2 text-muted">Du '.$data['date_debut'].' au '.$data['date_fin'].'</h6>';
+                                    echo'<p class="card-text">'.$data['description'].'</p>';
+                                echo'</div>';
+
+                                $formation = $data['identifiant_formation'];
+
+                                $sql3 = "SELECT * FROM projet WHERE identifiant_formation = $formation ";
+                                $result3 = mysqli_query($db_handle, $sql3);
+
+                                while($data3 = mysqli_fetch_assoc($result3)) {
+                                    echo '<div class="card">';
+                                        echo'<div class="card-body">';
+                                            echo'<h5 class="card-title">'.$data3['nom'].'</h5>';
+                                            echo'<h6 class="card-subtitle mb-2 text-muted">En '.$data3['date'].'</h6>';
+                                            echo'<p class="card-text">'.$data3['description'].'</p>';
+                                        echo'</div>';
+                                    echo'</div>';
+                                }
+                            echo'</div>';
+                        echo'</div>';
+
+
+                    }
+                    echo'</div>';
+                    echo'</div>';
 
                 }
             }else {
@@ -128,11 +170,12 @@ require "verif_session.php";
             }
             mysqli_close($db_handle);
             ?>
-
+            <br>
 
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary" onclick="Editer()">Modifier mes informations</button>
             </div>
+
 
             <!-- Footer -->
             <footer class="pt-3 mt-4 text-muted border-top">
@@ -140,6 +183,7 @@ require "verif_session.php";
             </footer>
 
         </div>
+
 
 
 
@@ -163,21 +207,21 @@ require "verif_session.php";
                 while ($data = mysqli_fetch_assoc($result)) {
                     echo '<div class="d-flex justify-content-center">';
 
-                    if(empty($utilisateur['photo'])) {
+                    if(empty($data['photo'])) {
                         echo '<img src="images\defaut.jpg" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
-                        $image = "images\defaut.jpg";
-
                     }else{
                         $image = $data['photo'];
-                        echo '<img src="$image" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
+                        echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
-
                     echo '</div>';
 
-                    echo '<form method="post" >';
-                    echo '<div class="d-flex justify-content-center mt-3">';
+
+                    echo '<form method="post" enctype="multipart/form-data">';
+                    echo '<div class="d-flex justify-content-center mt-3">' ;
                     echo '<input type="file" name="Nouvelleimage">';
                     echo '</div>'.'<br>';
+
+                    echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
 
                     echo '<div class="form-group">';
@@ -203,7 +247,11 @@ require "verif_session.php";
                     echo '<div class="form-group">';
                     echo'<label for="bio"><b>Biographie</b></label>';
                     $bio = $data['bio'];
-                    echo '<textarea class="form-control" name="bio" placeholder='.$bio.'>'.$bio.'</textarea>';
+
+                    echo "<textarea class='form-control' name='bio' placeholder=".$bio.">".$bio."</textarea>";
+
+                    echo '<br><h1 class="h3 border-top"><b>Formations</b></h1>';
+
 
                     echo '<br><div class="d-flex justify-content-center">';
                     echo '<button type="submit" name="envoie_des_données" class="btn btn-success" onclick="Sauvegarder()">Enregistrer mes modifications</button>';
@@ -215,7 +263,46 @@ require "verif_session.php";
 
             if (isSet($_POST['envoie_des_données'])) {
 
-                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
+                $_POST['nom'] = str_replace("'","''",$_POST['nom']);
+                $_POST['prenom'] = str_replace("'","''",$_POST['prenom']);
+                $_POST['email'] = str_replace("'","''",$_POST['email']);
+                $_POST['mdp'] = str_replace("'","''",$_POST['mdp']);
+                $_POST['bio'] = str_replace("'","''",$_POST['bio']);
+
+                if (isset($_FILES['Nouvelleimage']) && $_FILES['Nouvelleimage']['error'] != UPLOAD_ERR_NO_FILE){
+
+                    $nomFichier = $_FILES['Nouvelleimage']['name'];
+                    $typeFichier = $_FILES['Nouvelleimage']['type'];
+                    $tailleFichier = $_FILES['Nouvelleimage']['size'];
+                    $tmpFichier = $_FILES['Nouvelleimage']['tmp_name'];
+
+                    // Vérifiez si le fichier est une image
+                    $extensionsAutorisees = array('jpg', 'jpeg', 'gif', 'png');
+                    $extensionFichier = pathinfo($nomFichier, PATHINFO_EXTENSION);
+                    if (!in_array(strtolower($extensionFichier), $extensionsAutorisees)) {
+                        die();
+                    }
+
+                    // Vérifiez la taille du fichier - 5MB maximum
+                    $tailleMax = 5 * 1024 * 1024; // 5MB
+                    if ($tailleFichier > $tailleMax) {
+                        die();
+                    }
+
+                    $dossier = 'images/';
+                    $chemin = $dossier . basename($nomFichier);
+
+                    if (move_uploaded_file($tmpFichier, $chemin)) {
+                        echo " ";
+                    } else {
+                        echo "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
+                    }
+
+                    $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."',photo='".$chemin."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
+                }else{
+                    $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
+                }
+
                 mysqli_query($db_handle, $requete);
 
                 echo"<script>
