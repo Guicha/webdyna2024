@@ -57,7 +57,7 @@ require "verif_session.php";
                 <div class="card-header" id="chat-header">
                     Conversation avec <span id="chat-with">...</span>
                 </div>
-                <div class="card-body" id="chat-box">
+                <div class="card-body" id="chat-box" style="max-height: 340px; overflow: auto">
                     <!-- Afficher les messages ici -->
                 </div>
                 <div class="input-group mt-3">
