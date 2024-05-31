@@ -213,12 +213,11 @@ require "verif_session.php";
                         $image = $data['photo'];
                         echo '<img src="'.$image.'" class="img-thumbnail" alt="image de profil" style="width: 300px; height: 300px;">';
                     }
-
                     echo '</div>';
 
 
                     echo '<form method="post" enctype="multipart/form-data">';
-                    echo '<div class="d-flex justify-content-center mt-3">';
+                    echo '<div class="d-flex justify-content-center mt-3">' ;
                     echo '<input type="file" name="Nouvelleimage">';
                     echo '</div>'.'<br>';
 
@@ -270,39 +269,40 @@ require "verif_session.php";
                 $_POST['mdp'] = str_replace("'","''",$_POST['mdp']);
                 $_POST['bio'] = str_replace("'","''",$_POST['bio']);
 
-                $nomFichier = $_FILES['Nouvelleimage']['name'];
-                $typeFichier = $_FILES['Nouvelleimage']['type'];
-                $tailleFichier = $_FILES['Nouvelleimage']['size'];
-                $tmpFichier = $_FILES['Nouvelleimage']['tmp_name'];
+                if (isset($_FILES['Nouvelleimage']) && $_FILES['Nouvelleimage']['error'] != UPLOAD_ERR_NO_FILE){
 
-                // Vérifiez si le fichier est une image
-                $extensionsAutorisees = array('jpg', 'jpeg', 'gif', 'png');
-                $extensionFichier = pathinfo($nomFichier, PATHINFO_EXTENSION);
-                if (!in_array(strtolower($extensionFichier), $extensionsAutorisees)) {
-                    die();
+                    $nomFichier = $_FILES['Nouvelleimage']['name'];
+                    $typeFichier = $_FILES['Nouvelleimage']['type'];
+                    $tailleFichier = $_FILES['Nouvelleimage']['size'];
+                    $tmpFichier = $_FILES['Nouvelleimage']['tmp_name'];
+
+                    // Vérifiez si le fichier est une image
+                    $extensionsAutorisees = array('jpg', 'jpeg', 'gif', 'png');
+                    $extensionFichier = pathinfo($nomFichier, PATHINFO_EXTENSION);
+                    if (!in_array(strtolower($extensionFichier), $extensionsAutorisees)) {
+                        die();
+                    }
+
+                    // Vérifiez la taille du fichier - 5MB maximum
+                    $tailleMax = 5 * 1024 * 1024; // 5MB
+                    if ($tailleFichier > $tailleMax) {
+                        die();
+                    }
+
+                    $dossier = 'images/';
+                    $chemin = $dossier . basename($nomFichier);
+
+                    if (move_uploaded_file($tmpFichier, $chemin)) {
+                        echo " ";
+                    } else {
+                        echo "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
+                    }
+
+                    $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."',photo='".$chemin."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
+                }else{
+                    $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
                 }
 
-                // Vérifiez la taille du fichier - 5MB maximum
-                $tailleMax = 5 * 1024 * 1024; // 5MB
-                if ($tailleFichier > $tailleMax) {
-                    die();
-                }
-
-                $dossier = 'images/';
-                $chemin = $dossier . basename($nomFichier);
-
-                if (move_uploaded_file($tmpFichier, $chemin)) {
-                    echo " ";
-                } else {
-                    echo "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
-                }
-
-
-
-
-
-
-                $requete = "UPDATE Utilisateur SET nom='".$_POST['nom']."',prenom='".$_POST['prenom']."',mdp='".$_POST['mdp']."',email='".$_POST['email']."',bio='".$_POST['bio']."',photo='".$chemin."' WHERE identifiant_utilisateur=$Le_mec_qui_est_co";
                 mysqli_query($db_handle, $requete);
 
                 echo"<script>
