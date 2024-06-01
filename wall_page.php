@@ -108,9 +108,83 @@ if ($num_rows != 0) {
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col" >
+                <div class="container">
+                    <div class="row">
+                    <h1>Formations/Activités</h1>
 
-                <h1>Formation</h1>
+                    <?php
+
+                    $sql_formation = "SELECT * FROM formation WHERE identifiant_utilisateur = $mur_identifiant_utilisateur ORDER BY date_debut DESC";
+
+                    $result_formation = mysqli_query($conn, $sql_formation);
+
+                    while ($data = mysqli_fetch_assoc($result_formation)) {
+                    ?>
+
+                    <div class="col-md-6  ">
+                        <div class="card text-white bg-secondary mb-4">
+                            <div class="card-body">
+                                <?php
+                                echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
+
+                                $date_de_debut_formation = date("F Y", strtotime($data['date_debut']));
+                                if (date("Y", strtotime($data['date_fin']))=='-0001'){
+                                echo'<h6 class="card-subtitle mb-2 text-muted"><i>Depuis '.$date_de_debut_formation.'</i></h6>';
+                                }else{
+                                $date_de_fin_formation = date("F Y", strtotime($data['date_fin']));
+                                echo'<h6 class="card-subtitle mb-2 text-muted"><i>De '.$date_de_debut_formation.' à '.$date_de_fin_formation.'</i></h6>';
+                                }
+
+                                echo'<p class="card-text">'.$data['description'].'</p>';
+                                echo'</div>';
+
+                            $formation = $data['identifiant_formation'];
+
+                            $sql_projet = "SELECT * FROM projet WHERE identifiant_formation = $formation ORDER BY date DESC";
+                            $result_projet = mysqli_query($conn, $sql_projet);
+
+                            while($data2 = mysqli_fetch_assoc($result_projet)) {
+
+                            echo '<div class="card mb-4">';
+                                echo'<div class="card-body">';
+                                    echo'<h5 class="card-title"><u>Projet : '.$data2['nom'].'</u></h5>';
+
+                                    $date_projet = explode('-', $data2['date']);
+                                    $annee_projet = $date_projet[0];
+                                    $mois_projet = $date_projet[1];
+
+                                    if ($date_projet[0] == "0000"){
+                                        echo'<h6 class="card-subtitle mb-2 text-muted"> </h6>';
+                                    }
+                                    else {
+                                        if($date_projet[1]== "00"){
+                                            echo'<h6 class="card-subtitle mb-2 text-muted"><i>En '.$date_projet[0].'</i></h6>';
+                                        }
+                                        else{
+                                            $date_de_projet_normal = date("F Y", strtotime($data2['date']));
+                                            echo'<h6 class="card-subtitle mb-2 text-muted"><i>'.$date_de_projet_normal.'</i></h6>';
+                                        }
+                                    }
+
+                                    echo'<p class="card-text">'.$data2['description'].'</p>';
+
+                                    echo'</div>';
+                                echo'</div>';
+
+                            }
+                            echo'</div>';
+                        echo'</div>';
+
+                    }
+                    ?>
+                </div>
+
+                <br>
+                <div class="container border-bottom">
+                    <div class="row">
+                    </div>
+                </div>
 
             </div>
         </div>
