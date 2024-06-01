@@ -24,6 +24,7 @@ if (empty($_SESSION)) {
     $_SESSION['photo'] = $row['photo'];
     $_SESSION['bio'] = $row['bio'];
     $_SESSION['cv'] = $row['cv'];
+
 }
 
 ?>

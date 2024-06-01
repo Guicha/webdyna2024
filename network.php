@@ -246,6 +246,7 @@ require "verif_session.php";
 
                                     echo "<input type='hidden' name='identifiant_ami' value=$id_ami>";
 
+
                                     echo "<small>  <button type=\"submit\" name='deconnecter' class=\"btn btn-danger\">Se déconnecter</button> </small>";
 
                                     echo "</form>";
