@@ -1,25 +1,16 @@
 <?php
 
 require "verif_session.php";
-
 include "liaison_bdd.php";
 
-
-
 if (isset($_POST['publier'])) {
-
     $titre = $_POST['titre_publication'];
     $localisation = $_POST['localisation_publication'];
     $description = $_POST['description_publication'];
     $prive = $_POST['prive'];
     $identifiant_auteur = $_POST['identifiant_auteur'];
 
-    //$titre = str_replace("'", "''", $titre);
-    //$localisation = str_replace("'", "''", $localisation);
-    //$description = str_replace("'", "''", $description);
-
     if (isset($_FILES['media_publication'])) {
-
         $nomFichier = $_FILES['media_publication']['name'];
         $typeFichier = $_FILES['media_publication']['type'];
         $tailleFichier = $_FILES['media_publication']['size'];
@@ -43,29 +34,29 @@ if (isset($_POST['publier'])) {
         $dossier = 'posts/';
         $chemin = $dossier . basename($nomFichier);
 
-        if (move_uploaded_file($tmpFichier, $chemin)) {
-            echo " ";
-        } else {
+        if (!move_uploaded_file($tmpFichier, $chemin)) {
             echo "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
+            //die();
         }
 
         $sql = "INSERT INTO post (titre, description, lieu, date, prive, media, identifiant_utilisateur) VALUES (\"$titre\",\"$description\",\"$localisation\",NOW(), \"$prive\",\"$chemin\",\"$identifiant_auteur\")";
-
         $result = mysqli_query($conn, $sql);
 
         if ($result) {
+            // Ajout de la notification pour les amis de l'utilisateur
+            $message = "Votre connexion " . $_SESSION['prenom'] . " " . $_SESSION['nom'] . " vient de mettre une publication.";
+            $notif_query = "INSERT INTO notifications (user_id, message) 
+                            SELECT ami.identifiant_utilisateur, '$message'
+                            FROM ami 
+                            WHERE ami.identifiant_ami = $identifiant_auteur";
+            mysqli_query($conn, $notif_query);
 
             $page_perso = "Location: wall_page.php?user=" . $_SESSION['identifiant_utilisateur'];
-
             header($page_perso);
-
         } else {
-
             header('Location: network.php');
         }
-
     } else {
-
         echo "Veuillez fournir un media pour votre publication";
     }
 }
