@@ -1,5 +1,5 @@
 <?php
-session_start();
+require "verif_session.php";
 include 'liaison_bdd.php';
 
 $current_user_id = $_SESSION['identifiant_utilisateur'];
