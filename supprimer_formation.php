@@ -8,8 +8,10 @@ $db_found = mysqli_select_db($db_handle, $database);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['IDformation'])) {
     $formationId = $_POST['IDformation'];
+    $supprimer_projet_de_formation = 'DELETE FROM `projet` WHERE `projet`.`identifiant_formation` ='.$formationId;
+    mysqli_query($db_handle, $supprimer_projet_de_formation);
 
-    $sql = 'DELETE FROM `formation` WHERE `formation`.`identifiant_formation` ='.$formationId;
-    mysqli_query($db_handle, $sql);
+    $supprimer_formation = 'DELETE FROM `formation` WHERE `formation`.`identifiant_formation` ='.$formationId;
+    mysqli_query($db_handle, $supprimer_formation);
     }
 ?>
