@@ -1,3 +1,9 @@
+<?php
+
+require "verif_session.php";
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -71,6 +77,7 @@
         });
 
     });
+
     $(document).on('click', '.Contacter_entreprise', function() {
         var emploiId = $(this).data('id');
         $.ajax({
@@ -89,11 +96,6 @@
 
 </script>
 
-<?php
-
-require "verif_session.php";
-
-?>
 <div class="container">
     <!-- Header -->
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -123,7 +125,6 @@ require "verif_session.php";
 
     <!-- Emplois -->
     <?php
-
 
     $database = "webdyna2024";
 
@@ -160,7 +161,7 @@ require "verif_session.php";
 
                                 echo '<h5 class="card-title"><b>'.$emploi['nom'].'</b></h5>';
                                 echo'<h6 class="card-subtitle mb-2 text-muted"><i>'.$emploi['type'].'</i></h6>';
-                                echo'<h6 class="card-subtitle mb-2 ">Proposé par '.$nom_entreprise['nom'].' '.$nom_entreprise['prenom'].'</h6>';
+                                echo'<h6 class="card-subtitle mb-2 ">Proposé par '.$nom_entreprise['prenom'].' '.$nom_entreprise['nom'].'</h6>';
                                 echo'<p class="card-text">'.$emploi['description'].'</p>';
 
 
@@ -184,15 +185,13 @@ require "verif_session.php";
         $type = str_replace("'","''",$_POST['type_emploi']);
 
 
-        $nouvel_emploi = "INSERT INTO `emploi` (`nom`, `description`, `type`,`identifiant_utilisateur`) VALUES ('".$nom."', '".$description."', '".$type."','".$id_user."')";
+        $nouvel_emploi = "INSERT INTO emploi (nom, description, type, identifiant_utilisateur) VALUES (\"$nom\", \"$description\", \"$type\",\"$id_user\")";
         $result_nouvel_emploi = mysqli_query($db_handle, $nouvel_emploi);
 
         echo "<script>window.location.href = 'jobs.php';</script>";
 
 
     }
-
-
 
 
 
@@ -215,7 +214,7 @@ require "verif_session.php";
 
                 <div class="modal-body">
 
-                    <form class="row g-3" method="POST" ">
+                    <form class="row g-3" method="POST" action="jobs.php">
 
 
                     <div class="form-group">

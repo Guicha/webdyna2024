@@ -26,7 +26,7 @@ if (isset($_POST['IDemploi'])) {
 
 
 
-    $message = "".$_SESSION['nom']." ".$_SESSION['prenom']." est intéressé(e) par l''offre d''emploi ".$nom_emploi.".";
+    $message = "".$_SESSION['prenom']." ".$_SESSION['nom']." est intéressé(e) par l''offre d''emploi ".$nom_emploi.".";
 
     $envoi_message = "INSERT INTO `messages` ( `sender_id`, `receiver_id`, `message`, `sender_name`, `last_interaction`) VALUES ('".$utilisateur."', '".$id_entreprise."', '".$message."', 'Système', NOW())";
     mysqli_query($db_handle, $envoi_message);
