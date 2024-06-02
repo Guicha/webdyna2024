@@ -123,7 +123,7 @@ if ($num_rows != 0) {
                     ?>
 
                     <div class="col-md-6  ">
-                        <div class="card text-white bg-secondary mb-4">
+                        <div class="card text-white bg-secondary mb-4 h-100">
                             <div class="card-body">
                                 <?php
                                 echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
