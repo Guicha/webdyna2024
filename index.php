@@ -69,15 +69,29 @@ include "liaison_bdd.php";
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="https://via.placeholder.com/800x400" alt="First slide">
+                    <img class="d-block w-100" src="images/vivatech.jpeg" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Événement de la semaine</h5>
-                        <p>Description de l'événement.</p>
+                        <h5>Vivatech 2024</h5>
+                        <p>La semaine dernière à eu lieu VivaTech 2024.</p>
                     </div>
                 </div>
-                <!-- Ajoutez d'autres éléments de carousel ici -->
-            </div>
 
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="images/shrek.jpg" alt="Second slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Shrek 2024</h5>
+                        <p>La semaine dernière à eu lieu Shrek 2024.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="images/logo.png" alt="Third slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>La meilleure école !</h5>
+                        <p>Branchez vous ECE</p>
+                    </div>
+                </div>
+            </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -88,7 +102,12 @@ include "liaison_bdd.php";
             </a>
         </div>
 
-        <h2 class="mt-4">Mur de publications</h2>
+        <h2 class="mt-4">Événements récents</h2>
+        <!-- Liste des événements -->
+    </div>
+
+
+    <h2 class="mt-4">Mur de publications</h2>
 
 
 
