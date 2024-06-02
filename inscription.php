@@ -77,7 +77,7 @@ if (isset($_POST['inscription'])) {
 
         if ($mdp === $conf_mdp) {
 
-            $sql = "insert into utilisateur(type,nom,prenom,email,mdp) values(\"user\", \"$nom_famille\", \"$prenom\", \"$email\",\"$mdp\")";
+            $sql = "insert into utilisateur(type,nom,prenom,email,mdp,photo) values(\"user\", \"$nom_famille\", \"$prenom\", \"$email\",\"$mdp\",\"images/defaut.jpg\")";
 
             $result = mysqli_query($conn, $sql);
 
