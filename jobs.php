@@ -1,3 +1,9 @@
+<?php
+
+require "verif_session.php";
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,14 +18,84 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous">
     </script>
+
+    <style>
+        /* Style pour fixer les boutons de la card */
+        .card {
+            position: relative;
+        }
+        .btn-fixed-droite {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .btn-fixed-gauche {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+    </style>
+
 </head>
 <body>
 
-<?php
+<script>
+    function Gestion_bouton_supp_et_contacter(Id_entreprise,Id_emploi) {
+        $.ajax({
+            url: 'gestion_bouton_emplois.php',
+            type: 'GET',
+            data: { 'envoi_information': 1, 'id_entreprise':Id_entreprise },
+            success: function(valeur) {
+                var contenu = '';
+                if(valeur == 0) {
+                    contenu = '<button type="button" class="btn btn-success btn-fixed-gauche Contacter_entreprise" data-id="' + Id_emploi + '">Prendre contact</button>';
+                } else {
+                    contenu = '<button type="button" class="btn btn-secondary btn-fixed-gauche " data-id="' + Id_emploi + '">Prendre contact</button>' +
+                        '<button  type="button" class="btn btn-danger btn-fixed-droite Supprimer_emploi" data-id="' + Id_emploi + '">Supprimer</button>';
+                }
+                $('#'+ Id_emploi).html(contenu);
+            }
+        });
+    }
 
-require "verif_session.php";
 
-?>
+    $(document).on('click', '.Supprimer_emploi', function() {
+        var emploiId = $(this).data('id');
+        $.ajax({
+            url: 'Supprimer_emploi.php',
+            type: 'POST',
+            data: { 'Id_emploi': emploiId },
+
+            success: function(response) {
+                window.location.href = 'jobs.php';
+
+            },
+            error: function() {
+                alert('error');
+
+            }
+        });
+
+    });
+
+    $(document).on('click', '.Contacter_entreprise', function() {
+        var emploiId = $(this).data('id');
+        $.ajax({
+            url: 'contacter_entreprise.php',
+            type: 'POST',
+            data: { 'IDemploi': emploiId },
+            success: function(response) {
+                window.location.href = 'messaging.php';
+            },
+            error: function() {
+
+            }
+        });
+
+    });
+
+</script>
+
 <div class="container">
     <!-- Header -->
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -47,27 +123,121 @@ require "verif_session.php";
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="section">
-        <h1>Emplois</h1>
-        <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Titre de l'Emploi</h5>
-                    <small>Entreprise</small>
+    <!-- Emplois -->
+    <?php
+
+    $database = "webdyna2024";
+
+    $db_handle = mysqli_connect('localhost', 'root', '');
+    $db_found = mysqli_select_db($db_handle, $database);
+
+    echo '<div class="section">
+
+            <h1>Emplois</h1>
+            
+            
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ajout_emploi">Ajouter un emploi sur le marché</button>
+            
+            <br>
+            <br>
+          
+            
+            <div class="row">';
+
+                $affichage_offre_emplois = "SELECT * FROM emploi ORDER BY type";
+                $result_affichage_offre_emplois = mysqli_query($db_handle, $affichage_offre_emplois);
+
+                while ($emploi = mysqli_fetch_assoc($result_affichage_offre_emplois)){
+                    $identifiant_entreprise = $emploi['identifiant_utilisateur'];
+                    $nom_de_l_entreprise = "SELECT nom,prenom FROM utilisateur WHERE identifiant_utilisateur = $identifiant_entreprise";
+                    $result_nom_de_l_entreprise = mysqli_query($db_handle, $nom_de_l_entreprise);
+
+                    $nom_entreprise = mysqli_fetch_assoc($result_nom_de_l_entreprise);
+
+
+                    echo '<div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3 h-100">
+                            <div class="card-body">';
+
+                                echo '<h5 class="card-title"><b>'.$emploi['nom'].'</b></h5>';
+                                echo'<h6 class="card-subtitle mb-2 text-muted"><i>'.$emploi['type'].'</i></h6>';
+                                echo'<h6 class="card-subtitle mb-2 ">Proposé par '.$nom_entreprise['prenom'].' '.$nom_entreprise['nom'].'</h6>';
+                                echo'<p class="card-text">'.$emploi['description'].'</p>';
+
+
+                                echo '<div id="'.$emploi['identifiant_emploi'].'"></div>';
+
+                                echo '<script>Gestion_bouton_supp_et_contacter('.$identifiant_entreprise.','.$emploi['identifiant_emploi'].')</script><br>';
+
+
+                            echo '</div>
+                        </div>
+                    </div>';
+                }
+            echo'</div>
+    </div>';
+
+    if (isSet($_POST['new_emploi'])) {
+        $id_user = $_SESSION['identifiant_utilisateur'];
+
+        $nom = str_replace("'","''",$_POST['nom_emploi']);
+        $description = str_replace("'","''",$_POST['description_emploi']);
+        $type = str_replace("'","''",$_POST['type_emploi']);
+
+
+        $nouvel_emploi = "INSERT INTO emploi (nom, description, type, identifiant_utilisateur) VALUES (\"$nom\", \"$description\", \"$type\",\"$id_user\")";
+        $result_nouvel_emploi = mysqli_query($db_handle, $nouvel_emploi);
+
+        echo "<script>window.location.href = 'jobs.php';</script>";
+
+
+    }
+
+
+
+    mysqli_close($db_handle);
+
+    ?>
+    <!-- Page modal d'ajout d'emploi -->
+    <div class="modal fade" id="ajout_emploi" tabindex="-1">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h1 class="modal-title fs-5" id="formation">Ajouter un emploi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
-                <p class="mb-1">Description du poste.</p>
-                <small>Date de publication</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Titre de l'Emploi</h5>
-                    <small>Entreprise</small>
+
+                <div class="modal-body">
+
+                    <form class="row g-3" method="POST" action="jobs.php">
+
+
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" class="form-control" name="nom_emploi" placeholder="Nom de l'emploi">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <input type="text" class="form-control" name="type_emploi" rows="3" placeholder="CDD, CDI, stage, alternance ...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description_emploi" rows="3" placeholder="Décrivez l'emploi, le salaire, les conditions de travail..."></textarea>
+                    </div>
+
+
+                    <button type="submit" name="new_emploi" class="btn btn-primary mb-3">Ajouter</button>
+
+                    </form>
                 </div>
-                <p class="mb-1">Description du poste.</p>
-                <small>Date de publication</small>
-            </a>
-            <!-- Répétez pour d'autres offres d'emploi -->
+            </div>
         </div>
     </div>
 

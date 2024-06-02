@@ -46,7 +46,7 @@ require "verif_session.php";
                 $('#save').click();
             },
             error: function() {
-                alert('Une erreur est survenue lors de la requête AJAX.');
+                alert('Changer de Navigateur pour avoir une suppression opérationel de formation !');
             }
         });
 
@@ -62,7 +62,7 @@ require "verif_session.php";
                 $('#save').click();
             },
             error: function() {
-                alert('Une erreur est survenue lors de la requête AJAX.');
+                alert('Changer de Navigateur pour avoir une suppression opérationel de projet !');
             }
         });
 
@@ -189,7 +189,7 @@ require "verif_session.php";
 
                             while ($data = mysqli_fetch_assoc($result_recherche_formation)) {
                                 echo'<div class="col-md-4  ">';
-                                    echo '<div class="card text-white bg-secondary mb-3">';
+                                    echo '<div class="card text-white bg-secondary mb-3 h-100">';
                                         echo'<div class="card-body">';
                                             echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
 
@@ -341,7 +341,7 @@ require "verif_session.php";
 
 
                             echo'<div class="col-md-4  ">';
-                                echo'<div class="card text-white bg-secondary mb-3">';
+                                echo'<div class="card text-white bg-secondary mb-3 h-100">';
                                     echo'<div class="card-body">';
                                         echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
 
@@ -366,7 +366,7 @@ require "verif_session.php";
 
                                     while($data3 = mysqli_fetch_assoc($result_recherche_projet)) {
 
-                                        echo '<div class="card mb-3">';
+                                        echo '<div class="card mb-3 ">';
                                             echo'<div class="card-body">';
                                                 echo'<h5 class="card-title"><u>Projet : '.$data3['nom'].'</u></h5>';
 
@@ -555,12 +555,7 @@ require "verif_session.php";
                 mysqli_query($db_handle, $modification_information);
 
                 echo "<script>
-                            if (!localStorage.getItem('pageRefreshed')) {
-                                 localStorage.setItem('pageRefreshed', 'true');
-                                 location.reload();
-                            }else {
-                                  localStorage.removeItem('pageRefreshed');
-                            }
+                            window.location.href = 'profile.php';
                 </script>";
 
             }
