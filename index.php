@@ -53,13 +53,16 @@ include "liaison_bdd.php";
 
     <!-- Main Content -->
     <div class="section">
-        <h1>Accueil</h1>
 
         <?php
 
-        echo "<p>Bienvenue " . $_SESSION['prenom'] . " !</p>";
+        echo "<h1>Bienvenue " . $_SESSION['prenom'] . " !</h1>";
 
         ?>
+
+        <p>ECE In, le réseau professionnel privilégié des membres de l'ECE. Etablissez des connexions et étoffez votre réseau en un temps record</p>
+
+        <h1>Evenements de la semaine</h1>
 
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
@@ -69,17 +72,21 @@ include "liaison_bdd.php";
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="images/vivatech.jpeg" alt="First slide">
+                    <img class="d-block w-100" src="images/vivatech.png" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Vivatech 2024</h5>
                         <p>La semaine dernière à eu lieu VivaTech 2024.</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="images/shrek.jpg" alt="Second slide">
+                    <img class="d-block w-100" src="images/campus_ece.jpg" alt="Second slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Shrek 2024</h5>
-                        <p>La semaine dernière à eu lieu Shrek 2024.</p>
+                        <p>Dernières portes ouvertes de l'ECE !</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="images/campus_bordeaux.png" alt="Second slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <p>Venez nombreux au jobdating ECE</p>
                     </div>
                 </div>
                 <!-- Ajoutez d'autres éléments de carousel ici -->
@@ -93,10 +100,6 @@ include "liaison_bdd.php";
                 <span class="visually-hidden">Next</span>
             </a>
         </div>
-
-        <h2 class="mt-4">Événements récents</h2>
-        <!-- Liste des événements -->
-
 
     <h2 class="mt-4">Mur de publications</h2>
 
@@ -295,7 +298,14 @@ include "liaison_bdd.php";
 
     <!-- Footer -->
     <footer class="pt-3 mt-4 text-muted border-top">
-        © 2024 ECE In
+        © 2024 ECE In <br>
+        <small> <i>
+            <a href="mailto:contact@ecein.fr">contact@ecein.fr</a> <br>
+            01 44 39 06 00 <br>
+            10 rue Sextius Michel, Paris 15 <br>
+            </i> </small>
+
+        <div style="width: 100%"><iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=en&amp;q=10%20rue%20Sextius%20Michel+(ECE%20In)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps tracker sport</a></iframe></div>
     </footer>
 </div>
 

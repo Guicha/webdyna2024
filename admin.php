@@ -80,6 +80,7 @@ if (isset($_GET['supprimer'])) {
         header('Location: admin.php');
         exit();
     }
+
 }
 ?>
 
@@ -96,6 +97,37 @@ if (isset($_GET['supprimer'])) {
             </a>
         </div>
     </header>
+
+    <div class="card mb-3" style="max-width: 740px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+
+                <?php
+                $admin_photo = $_SESSION['photo'];
+
+
+                echo "<img src=$admin_photo class='rounded' width='170' height='150'>";
+                ?>
+
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <?php
+                    $admin_prenom = $_SESSION['prenom'];
+                    $admin_nom = $_SESSION['nom'];
+                    $admin_bio = $_SESSION['bio'];
+                    $admin_email = $_SESSION['email'];
+
+
+                    echo "<h4>" . $admin_prenom . " " . $admin_nom . "</h4>";
+                    echo "<p class='card-text'>". $admin_bio ."</p>";
+                    echo "<p class='card-text'> <small class='text-body-secondary'>". $admin_email ."</small> </p>";
+                    ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <div class="section">
@@ -167,7 +199,12 @@ if (isset($_GET['supprimer'])) {
 
     <!-- Footer -->
     <footer class="pt-3 mt-4 text-muted border-top">
-        © 2024 ECE In
+        © 2024 ECE In <br>
+        <small> <i>
+                <a href="mailto:contact@ecein.fr">contact@ecein.fr</a> <br>
+                01 44 39 06 00 <br>
+                10 rue Sextius Michel, Paris 15 <br>
+            </i> </small>
     </footer>
 </div>
 

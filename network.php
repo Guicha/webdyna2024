@@ -274,7 +274,12 @@ require "verif_session.php";
 
     <!-- Footer -->
     <footer class="pt-3 mt-4 text-muted border-top">
-        © 2024 ECE In
+        © 2024 ECE In <br>
+        <small> <i>
+                <a href="mailto:contact@ecein.fr">contact@ecein.fr</a> <br>
+                01 44 39 06 00 <br>
+                10 rue Sextius Michel, Paris 15 <br>
+            </i> </small>
     </footer>
 </div>
 
