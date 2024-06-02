@@ -101,6 +101,7 @@ include "liaison_bdd.php";
                 <span class="sr-only">Next</span>
             </a>
         </div>
+
         <h2 class="mt-4">Événements récents</h2>
         <!-- Liste des événements -->
     </div>
