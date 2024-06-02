@@ -44,7 +44,7 @@ if (isset($_POST['publier'])) {
 
         if ($result) {
             // Ajout de la notification pour les amis de l'utilisateur
-            $message = "Votre connexion " . $_SESSION['prenom'] . " " . $_SESSION['nom'] . " vient de mettre une publication.";
+            $message = "Votre connexion " . $_SESSION['prenom'] . " " . $_SESSION['nom'] . " vient de mettre en ligne une nouvelle publication.";
             $notif_query = "INSERT INTO notifications (user_id, message) 
                             SELECT ami.identifiant_utilisateur, '$message'
                             FROM ami 
