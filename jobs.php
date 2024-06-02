@@ -156,7 +156,7 @@ require "verif_session.php";
 
 
                     echo '<div class="col-md-4">
-                        <div class="card text-white bg-primary mb-3 h-100">
+                        <div class="card text-white bg-primary mb-3 h-99 mx-1">
                             <div class="card-body">';
 
                                 echo '<h5 class="card-title"><b>'.$emploi['nom'].'</b></h5>';
@@ -172,7 +172,7 @@ require "verif_session.php";
 
                             echo '</div>
                         </div>
-                    </div>';
+                    </div><br>';
                 }
             echo'</div>
     </div>';
