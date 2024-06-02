@@ -101,7 +101,9 @@ if ($num_rows != 0) {
                                 echo "<h4>" . $mur_prenom . " " .$mur_nom . "</h4>";
                                 echo "<p class='card-text'>". $mur_bio ."</p>";
                                 echo "<p class='card-text'> <small class='text-body-secondary'>". $mur_email ."</small> </p>";
+                                echo'<button class="btn btn-outline-primary CV_download btn-sm" data-id="'.$mur_cv.'">Télécharger le CV</button><br><br>';
                                 ?>
+
                             </div>
                         </div>
                     </div>
@@ -123,7 +125,7 @@ if ($num_rows != 0) {
                     ?>
 
                     <div class="col-md-6  ">
-                        <div class="card text-white bg-secondary mb-4 h-100">
+                        <div class="card text-white bg-secondary mb-4 ">
                             <div class="card-body">
                                 <?php
                                 echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
@@ -595,6 +597,27 @@ if ($num_rows != 0) {
         }
 
     })
+
+    $(document).on('click', '.CV_download', function(){
+        var Path_cv_Id = this.getAttribute('data-id');
+        if(Path_cv_Id === ''){
+            alert("Cette individu n'a pas de CV existant!");
+        }
+        else{
+            fetch(Path_cv_Id)
+                .then(response => response.blob())
+                .then(blob => {
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = 'CV.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        }
+
+    });
 
 
 </script>

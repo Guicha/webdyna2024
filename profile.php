@@ -83,6 +83,43 @@ require "verif_session.php";
 
     });
 
+    $(document).on('click', '.CV_download', function(){
+        var Path_cv_Id = this.getAttribute('data-id');
+        if(Path_cv_Id === ''){
+            alert("Vous n'avez pas de CV existant !");
+        }
+        else{
+            fetch(Path_cv_Id)
+                .then(response => response.blob())
+                .then(blob => {
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = 'CV.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        }
+
+    });
+
+    $(document).on('click', '.CV_generate', function() {
+
+        $('#save').click();
+        $.ajax({
+            url: 'generation_cv.php',
+            type: 'GET',
+            data: { 'envoi_information': 1 },
+            success: function(response) {
+
+            },
+            error: function() {
+            }
+        });
+    });
+
+
 </script>
 
 <body>
@@ -146,6 +183,7 @@ require "verif_session.php";
                         }
                     echo '</div>';
 
+
                     echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
                     echo '<div class="form-group">';
@@ -175,6 +213,8 @@ require "verif_session.php";
                         echo  "<br>".$data['bio'] . "<br><br>";
                     echo '</div>';
 
+                    echo'<button class="btn btn-outline-primary CV_download" data-id="'.$data['cv'].'">Télécharger mon CV</button><br><br>';
+
                     echo '<h1 class="h3 border-top"><b>Formations/Activités</b></h1>';
                     echo'<br>';
 
@@ -189,7 +229,7 @@ require "verif_session.php";
 
                             while ($data = mysqli_fetch_assoc($result_recherche_formation)) {
                                 echo'<div class="col-md-4  ">';
-                                    echo '<div class="card text-white bg-secondary mb-3 h-100">';
+                                    echo '<div class="card text-white bg-secondary mb-3 ">';
                                         echo'<div class="card-body">';
                                             echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
 
@@ -244,9 +284,8 @@ require "verif_session.php";
                         echo'</div><br>';
                     echo'</div>';
                 }
-            }else {
-                echo "Database not found";
             }
+
             ?>
             <br>
 
@@ -289,6 +328,8 @@ require "verif_session.php";
                         }
 
                     echo '</div>';
+
+
                     echo '<form method="post" enctype="multipart/form-data">';
 
                     echo '<div class="d-flex justify-content-center mt-3">' ;
@@ -296,6 +337,7 @@ require "verif_session.php";
                         echo '<input type="file" name="Nouvelleimage">';
 
                     echo '</div><br>';
+
 
                     echo '<h1 class="h3 border-top"><b>Informations</b></h1>';
 
@@ -319,12 +361,30 @@ require "verif_session.php";
 
                     echo "<textarea class='form-control' name='bio' placeholder=".$bio.">".$bio."</textarea><br>";
 
+
+
+                    echo'<label for="import_CV"><b>Importer votre CV </b></label>';
+
+
+                    echo '<div class="d-flex justify-content mt-3">' ;
+
+                        echo '<input type="file" name="NouveauCV">';
+
+                    echo '</div><br>';
+
+                    echo'<label for="import_CV"><b>Générer votre CV </b></label><br>';
+
+                    echo'<button class="btn btn-outline-primary CV_generate" >Générer mon CV</button><br><br>';
+
+
                     echo '<div class="d-flex justify-content-center">';
 
                         echo '<button type="submit" name="envoie_des_données" id="save" class="btn btn-success" onclick="Sauvegarder()">Enregistrer mes modifications</button>';
 
                     echo '</div>';
                     echo '</form>';
+
+
 
                     echo '<br><h1 class="h3 border-top"><b>Formations/Activités</b></h1>';
 
@@ -341,7 +401,7 @@ require "verif_session.php";
 
 
                             echo'<div class="col-md-4  ">';
-                                echo'<div class="card text-white bg-secondary mb-3 h-100">';
+                                echo'<div class="card text-white bg-secondary mb-3 ">';
                                     echo'<div class="card-body">';
                                         echo'<h5 class="card-title"><b>'.$data['nom'].'</b></h5>';
 
@@ -411,6 +471,9 @@ require "verif_session.php";
                         echo '</div>';
                     echo '</div>';
                 }
+                echo '</div>';
+                echo '</div>';
+
             }?>
 
             <!-- Page modal d'ajout de formation -->
@@ -553,6 +616,40 @@ require "verif_session.php";
                 }
 
                 mysqli_query($db_handle, $modification_information);
+
+                if (isset($_FILES['NouveauCV']) && $_FILES['NouveauCV']['error'] != UPLOAD_ERR_NO_FILE){
+
+                    $nomFichier = $_FILES['NouveauCV']['name'];
+                    $typeFichier = $_FILES['NouveauCV']['type'];
+                    $tailleFichier = $_FILES['NouveauCV']['size'];
+                    $tmpFichier = $_FILES['NouveauCV']['tmp_name'];
+
+                    // Vérifiez si le fichier est un fichier pdf ou HTML
+                    $extensionsAutorisees = array('HTML', 'pdf');
+                    $extensionFichier = pathinfo($nomFichier, PATHINFO_EXTENSION);
+                    if (!in_array(strtolower($extensionFichier), $extensionsAutorisees)) {
+                        die();
+                    }
+
+                    // Vérifiez la taille du fichier - 100MB maximum
+                    $tailleMax = 100 * 1024 * 1024;
+                    if ($tailleFichier > $tailleMax) {
+                        die();
+                    }
+
+                    $dossier = 'fichiers/';
+                    $chemin = $dossier . basename($nomFichier).'';
+
+                    move_uploaded_file($tmpFichier, $chemin);
+
+
+                    $importation_CV = "UPDATE `utilisateur` SET `cv` = '".$chemin."' WHERE `utilisateur`.`identifiant_utilisateur` = $Le_mec_qui_est_co";
+
+                    mysqli_query($db_handle, $importation_CV);
+
+                }
+
+
 
                 echo "<script>
                             window.location.href = 'profile.php';
