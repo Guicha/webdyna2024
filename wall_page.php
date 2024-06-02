@@ -284,35 +284,41 @@ if ($num_rows != 0) {
 
                 ?>
 
-
             </div>
 
         </div>
-
         <br>
+        <div class="container border-bottom">
+            <div class="row">
+            </div>
+        </div>
 
 
         <div class="row">
 
             <h1>Publications</h1>
 
-        </div>
+            <div class="col">
+                <?php
 
+                if ($_SESSION['identifiant_utilisateur'] == $mur_identifiant_utilisateur) {
 
-        <?php
-
-        if ($_SESSION['identifiant_utilisateur'] == $mur_identifiant_utilisateur) {
-
-            echo "
+                    echo "
             <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#modalPublier'>
                 Publier
             </button>  
             ";
 
-            echo "<br>";
-        }
+                    echo "<br>";
+                }
 
-        ?>
+                ?>
+            </div>
+
+        </div>
+
+
+
 
         <br>
 
