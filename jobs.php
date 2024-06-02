@@ -14,14 +14,19 @@
     </script>
 
     <style>
-        /* Style pour fixer le bouton en bas à droite de la card */
+        /* Style pour fixer les boutons de la card */
         .card {
-            position: relative; /* Position relative pour la card */
+            position: relative;
         }
-        .btn-fixed {
-            position: absolute; /* Position absolue pour le bouton */
-            bottom: 10px; /* 10px du bas de la card */
-            right: 10px; /* 10px de la droite de la card */
+        .btn-fixed-droite {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .btn-fixed-gauche {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
         }
     </style>
 
@@ -37,9 +42,10 @@
             success: function(valeur) {
                 var contenu = '';
                 if(valeur == 0) {
-                    contenu = '<button type="button" class="btn btn-success btn-fixed Contacter_entreprise" data-id="' + Id_emploi + '">Contacter</button>';
+                    contenu = '<button type="button" class="btn btn-success btn-fixed-gauche Contacter_entreprise" data-id="' + Id_emploi + '">Prendre contact</button>';
                 } else {
-                    contenu = '<button  type="button" class="btn btn-danger btn-fixed Supprimer_emploi" data-id="' + Id_emploi + '">Supprimer</button>';
+                    contenu = '<button type="button" class="btn btn-secondary btn-fixed-gauche " data-id="' + Id_emploi + '">Prendre contact</button>' +
+                        '<button  type="button" class="btn btn-danger btn-fixed-droite Supprimer_emploi" data-id="' + Id_emploi + '">Supprimer</button>';
                 }
                 $('#'+ Id_emploi).html(contenu);
             }
@@ -160,7 +166,7 @@ require "verif_session.php";
 
                                 echo '<div id="'.$emploi['identifiant_emploi'].'"></div>';
 
-                                echo '<script>Gestion_bouton_supp_et_contacter('.$identifiant_entreprise.','.$emploi['identifiant_emploi'].')</script>';
+                                echo '<script>Gestion_bouton_supp_et_contacter('.$identifiant_entreprise.','.$emploi['identifiant_emploi'].')</script><br>';
 
 
                             echo '</div>
