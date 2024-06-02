@@ -36,8 +36,7 @@ if (isset($_POST['liker'])) {
     }
 
     // Rediriger vers la page initiale
-    $page_perso = "Location: wall_page.php?user=" . $row['identifiant_utilisateur'];
-    header($page_perso);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 ?>

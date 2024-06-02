@@ -22,11 +22,10 @@ if (isset($_POST['supprimer'])) {
     $sql = "DELETE FROM post WHERE identifiant_post=$id_post";
     $result = mysqli_query($conn, $sql);
 
-    $page_perso = "Location: wall_page.php?user=" . $_SESSION['identifiant_utilisateur'];
 
     if ($result) {
 
-        header($page_perso);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
 
     } else {
 
